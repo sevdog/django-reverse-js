@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+
+.vscode
+
+tests/django_reverse_js/
+tests/django_reverse_js/**

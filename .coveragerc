@@ -1,0 +1,10 @@
+[run]
+omit =
+    */migrations/*
+    # do not check for templates
+    */templates/*
+    # skip statics
+    */static/*
+
+source =
+    django_reverse_js
