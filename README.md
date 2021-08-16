@@ -144,5 +144,6 @@ Urls['namespace:betterliving-get-house']({ category_slug: 'house', entry_pk: 12 
 - **`REVERSEJS_SCRIPT_PREFIX`**: path of application (when served behing a reverse-proxy), needed to return full-urls; default `None`.
 
 - **`REVERSEJS_OUTPUT_PATH`**: path where to place file created by `createstatic_reversejs` command, if not provided `STATIC_ROOT` is used; defatul `None`.
+- **`REVERSEJS_MINIFY`**: flag which indicates if the minified version of JS script should be used; default `False`.
 
 > NOTE: at the moment only one between `REVERSEJS_INCLUDE_ONLY_NAMESPACES` and `REVERSEJS_EXCLUDE_NAMESPACES` may be used.

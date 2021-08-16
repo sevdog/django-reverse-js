@@ -1,4 +1,8 @@
 #!/usr/bin/env python
-from setuptools import setup, find_packages
+from setuptools import setup
 
-setup()
+setup(
+    package_data={
+        'django_reverse_js': ['templates/django_reverse_js/*.js']
+    }
+)
