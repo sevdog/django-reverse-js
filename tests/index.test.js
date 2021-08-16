@@ -1,5 +1,5 @@
 import { expect } from '@jest/globals';
-import {UrlResolver, resolverFactory} from '../index';
+import {UrlResolver, factory} from '../index';
 import data from './data/routes.json';
 
 describe('Resolver argument parser', () => {
@@ -56,7 +56,7 @@ describe('Resolver argument parser', () => {
 });
 
 describe('Resolver factory', () => {
-    const resolver = resolverFactory(data);
+    const resolver = factory(data);
 
     it('Handles namespaces', () => {
         expect(resolver['ns1:test_two_url_args']('foo', 'bar')).toBe('/ns1/test_two_url_args/foo-bar');

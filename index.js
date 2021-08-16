@@ -48,7 +48,7 @@ export class UrlResolver {
 }
 
 
-export function resolverFactory(config) {
+export function factory(config) {
     const {
         urls: urlPatterns,
         prefix: urlPrefix
