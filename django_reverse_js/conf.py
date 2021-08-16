@@ -22,7 +22,8 @@ class _JSReverseSettings:
         global_name = getattr(_settings, 'REVERSEJS_GLOBAL_OBJECT_NAME', 'this')
         if not self.JS_IDENTIFIER_RE.match(global_name.upper()):
             raise ImproperlyConfigured(
-                f'REVERSEJS_GLOBAL_OBJECT_NAME setting "{global_name}" is not a valid javascript identifier.'
+                f'REVERSEJS_GLOBAL_OBJECT_NAME setting "{global_name}" '
+                'is not a valid javascript identifier.'
             )
 
         return global_name
@@ -39,10 +40,16 @@ class _JSReverseSettings:
     def JS_SCRIPT_PREFIX(self):
         return getattr(_settings, 'REVERSEJS_SCRIPT_PREFIX', None)
 
-
     @property
     def JS_OUTPUT_PATH(self):
         return getattr(_settings, 'REVERSEJS_OUTPUT_PATH', None)
+
+    @property
+    def JS_TEMPLATE(self):
+        minify = bool(getattr(_settings, 'REVERSEJS_MINIFY', False))
+        if minify:
+            return 'django_reverse_js/url-resolver.min.js'
+        return 'django_reverse_js/url-resolver.js'
 
 
 settings = _JSReverseSettings()

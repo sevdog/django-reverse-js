@@ -1,0 +1,37 @@
+{
+  "name": "django-reverse-js",
+  "version": "0.1.0",
+  "description": "Django URL handling in JavaScript",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "babel index.js -o django_reverse_js/templates/django_reverse_js/url-resolver.js && babel index.js --presets minify -o django_reverse_js/templates/django_reverse_js/url-resolver.min.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sevdog/django-reverse-js.git"
+  },
+  "keywords": [
+    "Django",
+    "URL-reverse"
+  ],
+  "author": "Davide Setti",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sevdog/django-reverse-js/issues"
+  },
+  "homepage": "https://github.com/sevdog/django-reverse-js#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.14.8",
+    "@babel/core": "^7.15.0",
+    "@babel/plugin-transform-template-literals": "^7.14.5",
+    "@babel/preset-env": "^7.15.0",
+    "babel-preset-minify": "^0.5.1",
+    "jest": "^27.0.6",
+    "babel-jest": "^27.0.6",
+    "regenerator-runtime": "^0.13.9"
+  }
+}

@@ -12,10 +12,16 @@ basic_patterns = [
     path('test_script', dummy_view, name='</script><script>console.log(&amp;)</script><!--'),
     path('test_one_url_args/<str:arg_one>', dummy_view, name='test_one_url_args'),
     path('test_two_url_args/<str:arg_one>-<str:arg_two>', dummy_view, name='test_two_url_args'),
-    re_path(r'^test_optional_url_arg/(?:1_(?P<arg_one>[-\w]+)-)?2_(?P<arg_two>[-\w]+)/$', dummy_view, name='test_optional_url_arg'),
+    re_path(
+        r'^test_optional_url_arg/(?:1_(?P<arg_one>[-\w]+)-)?2_(?P<arg_two>[-\w]+)/$',
+        dummy_view, name='test_optional_url_arg'
+    ),
     path('test_duplicate_name/<str:arg_one>', dummy_view, name='test_duplicate_name'),
     path('test_duplicate_name/<str:arg_one>-<str:arg_two>', dummy_view, name='test_duplicate_name'),
-    re_path(r'^test_duplicate_argcount/(?P<arg_one>[-\w]+)?-(?P<arg_two>[-\w]+)?/$', dummy_view, name='test_duplicate_argcount'),
+    re_path(
+        r'^test_duplicate_argcount/(?P<arg_one>[-\w]+)?-(?P<arg_two>[-\w]+)?/$',
+        dummy_view, name='test_duplicate_argcount'
+    ),
 ]
 
 urlpatterns = deepcopy(basic_patterns)
