@@ -22,7 +22,8 @@ class _JSReverseSettings:
         global_name = getattr(_settings, 'REVERSEJS_GLOBAL_OBJECT_NAME', 'this')
         if not self.JS_IDENTIFIER_RE.match(global_name.upper()):
             raise ImproperlyConfigured(
-                f'REVERSEJS_GLOBAL_OBJECT_NAME setting "{global_name}" is not a valid javascript identifier.'
+                f'REVERSEJS_GLOBAL_OBJECT_NAME setting "{global_name}" '
+                'is not a valid javascript identifier.'
             )
 
         return global_name

@@ -32,7 +32,8 @@ class CommandTestCase(SimpleTestCase):
 
     def test_reverse_js_file_save(self):
         call_command('createstatic_reversejs')
-        default_file_path = pathlib.Path(settings.STATIC_ROOT) / 'django_reverse_js' / 'js' / 'reverse.js'
+        default_file_path = pathlib.Path(settings.STATIC_ROOT) / 'django_reverse_js'
+        default_file_path = default_file_path / 'js' / 'reverse.js'
         with default_file_path.open() as js_file:
             produced_file = js_file.read()
 
