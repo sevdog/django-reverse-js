@@ -5,8 +5,9 @@
 [![Django version](https://img.shields.io/pypi/djversions/django-reverse-js)](https://img.shields.io/pypi/djversions/django-reverse-js)
 
 
-**Javascript url handling for Django that doesn’t hurt.**
+**JavaScript url handling for Django that doesn’t hurt.**
 
+_Original idea from [django-js-reverse](https://github.com/ierror/django-js-reverse)._
 
 _Django Reverse JS_ is a small django app that makes url handling of
 [named urls](https://docs.djangoproject.com/en/dev/topics/http/urls/#naming-url-patterns) in JavaScript easy and confortable for django's users.
@@ -26,16 +27,6 @@ Urls.betterlivingGetHouse('house', 12)
 
 
 # Installation
-
-### Requirements
-
-| Python version | Django versions    |
-|----------------|--------------------|
-| 3.6            | 2.2, 3.0, 3.1, 3.2 |
-| 3.7            | 2.2, 3.0, 3.1, 3.2 |
-| 3.8            | 2.2, 3.0, 3.1, 3.2 |
-| 3.9            | 2.2, 3.0, 3.1, 3.2 |
-
 
 Install using `pip`
 
