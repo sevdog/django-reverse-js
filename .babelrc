@@ -1,0 +1,22 @@
+{
+    "assumptions": {
+        "mutableTemplateObject": true
+    },
+    "presets": [
+        [
+            "@babel/preset-env", {
+                "targets": {
+                    "browsers": [
+                        "> 1%",
+                        "last 3 versions",
+                        "Firefox ESR",
+                        "not dead"
+                    ]
+                }
+            }
+        ]
+    ],
+    "plugins": [
+        "@babel/plugin-transform-template-literals"
+    ]
+}

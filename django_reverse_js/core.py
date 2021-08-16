@@ -121,16 +121,18 @@ def generate_js(default_urlresolver):
         script_prefix = get_script_prefix()
 
     data = generate_json(default_urlresolver, script_prefix)
-    js_content = loader.render_to_string('django_reverse_js/url-resolver.js', {
+    js_content = loader.render_to_string('django_reverse_js/url-resolver.tpl.js', {
         'data': _safe_json(data),
         'js_name': '.'.join([js_global_object_name, js_var_name]),
+        'reversejs_template': settings.JS_TEMPLATE
     })
 
     return js_content
 
 
 def generate_cjs_module():
-    return loader.render_to_string('django_reverse_js/url-resolver.js', {
+    return loader.render_to_string('django_reverse_js/url-resolver.tpl.js', {
         'data': "false",
         'js_name': 'module.exports',
+        'reversejs_template': settings.JS_TEMPLATE
     })

@@ -41,6 +41,7 @@ pip-delete-this-directory.txt
 htmlcov/
 .tox/
 .nox/
+coverage
 .coverage
 .coverage.*
 .cache
@@ -133,3 +134,6 @@ dmypy.json
 
 tests/django_reverse_js/
 tests/django_reverse_js/**
+
+node_modules
+node_modules/**

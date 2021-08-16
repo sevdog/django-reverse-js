@@ -27,6 +27,27 @@ jobs:
       - name: Run tox targets for ${{ matrix.python-version }}
         run: tox --py current
 
+  test-js:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Node latest
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          check-latest: true
+          cache: npm
+          cache-dependency-path: 'package-lock.json'
+
+      - name: Install dependencies
+        run: |
+          npm i
+
+      - name: Run jest
+        run: npm run test -- --coverage
+
   lint:
     name: Lint
     runs-on: ubuntu-latest
