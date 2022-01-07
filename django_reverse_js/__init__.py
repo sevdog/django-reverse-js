@@ -1,2 +1,1 @@
-# -*- coding: utf-8 -*-
-VERSION = (0, 9, 2)
+__version__ = (0, 1, 3)
