@@ -9,21 +9,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9, '3.10']
+        python-version: ['3.7', '3.8', '3.9', '3.10']
 
     steps:
-      - uses: actions/checkout@v2
-
+      - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
-
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip wheel setuptools
           python -m pip install --upgrade tox tox-py
-
       - name: Run tox targets for ${{ matrix.python-version }}
         run: tox --py current
 
@@ -31,20 +28,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-
+      - uses: actions/checkout@v3
       - name: Set up Node latest
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 16
           check-latest: true
           cache: npm
           cache-dependency-path: 'package-lock.json'
-
       - name: Install dependencies
         run: |
           npm i
-
       - name: Run jest
         run: npm run test -- --coverage
 
@@ -52,11 +46,11 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
-          python-version: 3.9
+          python-version: '3.9'
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip tox
