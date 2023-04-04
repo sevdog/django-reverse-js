@@ -9,18 +9,32 @@ dummy_view = View.as_view()
 basic_patterns = [
     # test urls
     path('test_no_url_args', dummy_view, name='test_no_url_args'),
-    path('test_script', dummy_view, name='</script><script>console.log(&amp;)</script><!--'),
+    path(
+        'test_script',
+        dummy_view,
+        name='</script><script>console.log(&amp;)</script><!--',
+    ),
     path('test_one_url_args/<str:arg_one>', dummy_view, name='test_one_url_args'),
-    path('test_two_url_args/<str:arg_one>-<str:arg_two>', dummy_view, name='test_two_url_args'),
+    path(
+        'test_two_url_args/<str:arg_one>-<str:arg_two>',
+        dummy_view,
+        name='test_two_url_args',
+    ),
     re_path(
         r'^test_optional_url_arg/(?:1_(?P<arg_one>[-\w]+)-)?2_(?P<arg_two>[-\w]+)/$',
-        dummy_view, name='test_optional_url_arg'
+        dummy_view,
+        name='test_optional_url_arg',
     ),
     path('test_duplicate_name/<str:arg_one>', dummy_view, name='test_duplicate_name'),
-    path('test_duplicate_name/<str:arg_one>-<str:arg_two>', dummy_view, name='test_duplicate_name'),
+    path(
+        'test_duplicate_name/<str:arg_one>-<str:arg_two>',
+        dummy_view,
+        name='test_duplicate_name',
+    ),
     re_path(
         r'^test_duplicate_argcount/(?P<arg_one>[-\w]+)?-(?P<arg_two>[-\w]+)?/$',
-        dummy_view, name='test_duplicate_argcount'
+        dummy_view,
+        name='test_duplicate_argcount',
     ),
 ]
 
@@ -66,7 +80,10 @@ pattern_only_nested_ns = [
 urlpatterns += [
     path('ns1/', include((pattern_ns_1, 'ns1'), namespace='ns1')),
     path('ns2/', include((pattern_ns_2, 'ns2'), namespace='ns2')),
-    path('ns_ex/', include((urlexclude, 'exclude_namespace'), namespace='exclude_namespace')),
+    path(
+        'ns_ex/',
+        include((urlexclude, 'exclude_namespace'), namespace='exclude_namespace'),
+    ),
     path('ns<path:ns_arg>/', include((pattern_ns, 'ns_arg'), namespace='ns_arg')),
     path('nestedns/', include((pattern_nested_ns, 'nestedns'), namespace='nestedns')),
     path('nsdn/', include((pattern_dubble_nested_ns, 'nsdn'), namespace='nsdn')),

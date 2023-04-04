@@ -11,7 +11,6 @@ PARENT_DIR = pathlib.Path(__file__).parent
 
 
 class CommandTestCase(SimpleTestCase):
-
     @classmethod
     def tearDownClass(cls):
         super().tearDownClass()
@@ -48,7 +47,7 @@ class CommandTestCase(SimpleTestCase):
     @override_settings(
         STATIC_ROOT=None,
         # point to same dir with a different name
-        REVERSEJS_OUTPUT_PATH=PARENT_DIR / 'django_reverse_js'
+        REVERSEJS_OUTPUT_PATH=PARENT_DIR / 'django_reverse_js',
     )
     def test_output_path(self):
         call_command('createstatic_reversejs')

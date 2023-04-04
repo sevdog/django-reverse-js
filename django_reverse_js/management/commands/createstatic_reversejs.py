@@ -15,8 +15,11 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            'out_file', type=Path, nargs='?',
-            help='Output file name', default=Path('reverse.js')
+            'out_file',
+            type=Path,
+            nargs='?',
+            help='Output file name',
+            default=Path('reverse.js'),
         )
 
     def get_location(self):

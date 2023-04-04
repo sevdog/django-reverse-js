@@ -36,8 +36,7 @@ def prepare_url_list(urlresolver, namespace_path='', namespace=''):
         # works for ns = "lorem:ipsum:dolor" include_only = ["lorem:ipsum"]
         # ns "lorem" will be ignored but "lorem:ipsum" & "lorem:ipsum:.." won't
         in_on_is_in_list = any(
-            ns != '' and simple_namespace.startswith(ns)
-            for ns in include_only_ns
+            ns != '' and simple_namespace.startswith(ns) for ns in include_only_ns
         )
         # Test if isn't used "\0" flag
         # use "foo\0" to add urls just from "foo" not from subns "foo:bar"
@@ -58,7 +57,10 @@ def prepare_url_list(urlresolver, namespace_path='', namespace=''):
                 yield [namespace + url_name, url_patterns]
 
     # check for inner namespaces
-    for inner_ns, (inner_ns_path, inner_urlresolver) in urlresolver.namespace_dict.items():
+    for inner_ns, (
+        inner_ns_path,
+        inner_urlresolver,
+    ) in urlresolver.namespace_dict.items():
         inner_ns_path = f'{namespace_path}{inner_ns_path}'
         inner_ns = f'{namespace}{inner_ns}:'
 
@@ -70,7 +72,7 @@ def prepare_url_list(urlresolver, namespace_path='', namespace=''):
                 inner_urlresolver,
                 # must turn into tuple because lrucache cannot
                 # hash this param otherwise
-                tuple(urlresolver.pattern.converters.items())
+                tuple(urlresolver.pattern.converters.items()),
             )
             inner_ns_path = ''
 
@@ -93,7 +95,8 @@ def generate_json(default_urlresolver, script_prefix=None):
                     [force_str(path), [force_str(arg) for arg in args]]
                     for path, args in patterns
                 ],
-            ] for name, patterns in urls
+            ]
+            for name, patterns in urls
         ],
         'prefix': script_prefix,
     }
@@ -101,8 +104,7 @@ def generate_json(default_urlresolver, script_prefix=None):
 
 def _safe_json(obj):
     return mark_safe(
-        json
-        .dumps(obj)
+        json.dumps(obj)
         # replace potentially harmful values from JSON
         # before marking string as safe
         .replace('>', '\\u003E')
@@ -121,18 +123,24 @@ def generate_js(default_urlresolver):
         script_prefix = get_script_prefix()
 
     data = generate_json(default_urlresolver, script_prefix)
-    js_content = loader.render_to_string('django_reverse_js/url-resolver.tpl.js', {
-        'data': _safe_json(data),
-        'js_name': '.'.join([js_global_object_name, js_var_name]),
-        'reversejs_template': settings.JS_TEMPLATE
-    })
+    js_content = loader.render_to_string(
+        'django_reverse_js/url-resolver.tpl.js',
+        {
+            'data': _safe_json(data),
+            'js_name': '.'.join([js_global_object_name, js_var_name]),
+            'reversejs_template': settings.JS_TEMPLATE,
+        },
+    )
 
     return js_content
 
 
 def generate_cjs_module():
-    return loader.render_to_string('django_reverse_js/url-resolver.tpl.js', {
-        'data': "false",
-        'js_name': 'module.exports',
-        'reversejs_template': settings.JS_TEMPLATE
-    })
+    return loader.render_to_string(
+        'django_reverse_js/url-resolver.tpl.js',
+        {
+            'data': "false",
+            'js_name': 'module.exports',
+            'reversejs_template': settings.JS_TEMPLATE,
+        },
+    )

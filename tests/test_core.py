@@ -7,7 +7,6 @@ from django_reverse_js.core import prepare_url_list, generate_json
 
 
 class CoreTestCase(SimpleTestCase):
-
     def test_full_extraction(self):
         extracted_paths = list(prepare_url_list(get_resolver()))
         self.assertEqual(len(extracted_paths), 65)
@@ -16,7 +15,9 @@ class CoreTestCase(SimpleTestCase):
     def test_namespace_not_in_response(self):
         extracted_paths = list(prepare_url_list(get_resolver()))
         self.assertEqual(len(extracted_paths), 64)
-        self.assertFalse(any(url[0].startswith('exclude_namespace:') for url in extracted_paths))
+        self.assertFalse(
+            any(url[0].startswith('exclude_namespace:') for url in extracted_paths)
+        )
 
     @override_settings(REVERSEJS_INCLUDE_ONLY_NAMESPACES=['ns1'])
     def test_only_namespace_in_response(self):
@@ -25,8 +26,12 @@ class CoreTestCase(SimpleTestCase):
         self.assertTrue(all(url[0].startswith('ns1:') for url in extracted_paths))
         self.assertFalse(any(url[0].startswith('ns2:') for url in extracted_paths))
         self.assertFalse(any(url[0].startswith('ns_arg:') for url in extracted_paths))
-        self.assertFalse(any(url[0].startswith('nesteadns:') for url in extracted_paths))
-        self.assertFalse(any(url[0].startswith('exclude_namespace:') for url in extracted_paths))
+        self.assertFalse(
+            any(url[0].startswith('nesteadns:') for url in extracted_paths)
+        )
+        self.assertFalse(
+            any(url[0].startswith('exclude_namespace:') for url in extracted_paths)
+        )
         self.assertFalse(any(url[0].startswith('nsdn:') for url in extracted_paths))
         self.assertFalse(any(url[0].startswith('nsno:') for url in extracted_paths))
 
@@ -35,7 +40,9 @@ class CoreTestCase(SimpleTestCase):
         extracted_paths = list(prepare_url_list(get_resolver()))
         self.assertEqual(len(extracted_paths), 7)
         self.assertTrue(all(url[0].startswith('nsdn:nsdn') for url in extracted_paths))
-        self.assertTrue(any(url[0].startswith('nsdn:nsdn2:ns1') for url in extracted_paths))
+        self.assertTrue(
+            any(url[0].startswith('nsdn:nsdn2:ns1') for url in extracted_paths)
+        )
         self.assertFalse(any(url[0].startswith('nsdn:ns1') for url in extracted_paths))
 
     @override_settings(REVERSEJS_INCLUDE_ONLY_NAMESPACES=[''])
@@ -55,7 +62,7 @@ class CoreTestCase(SimpleTestCase):
 
     @override_settings(
         REVERSEJS_INCLUDE_ONLY_NAMESPACES=['nsno\0'],
-        REVERSEJS_EXCLUDE_NAMESPACES=['exclude_namespace']
+        REVERSEJS_EXCLUDE_NAMESPACES=['exclude_namespace'],
     )
     def test_include_exclude_configuration(self):
         with self.assertRaises(ImproperlyConfigured):

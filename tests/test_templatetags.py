@@ -14,7 +14,7 @@ urlpatterns = [
 
 @override_settings(
     TEMPLATE_CONTEXT_PROCESSORS=['django.core.context_processors.request'],
-    ROOT_URLCONF=__name__
+    ROOT_URLCONF=__name__,
 )
 class TemplateTagTest(SimpleTestCase):
     def test_template_tag_with_request_in_context(self):
