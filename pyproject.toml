@@ -1,6 +1,124 @@
 [build-system]
 requires = [
-    "setuptools>=42",
+    "setuptools>=60",
     "wheel"
 ]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-reverse-js"
+version = "0.1.6"
+authors = [{name="Davide Setti"}]
+dependencies = [
+    "django>=3.2",
+]
+requires-python = ">=3.10"
+description = "Django URL handling in JavaScript"
+classifiers = [
+	"Programming Language :: Python",
+	"Programming Language :: Python :: 3",
+	"Programming Language :: Python :: 3.10",
+	"Programming Language :: Python :: 3.11",
+	"Programming Language :: Python :: 3.12",
+	"Framework :: Django",
+	"Framework :: Django :: 3.2",
+	"Framework :: Django :: 4.0",
+	"Framework :: Django :: 4.1",
+	"Framework :: Django :: 4.2",
+	"Framework :: Django :: 5.0",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+	"Intended Audience :: Developers",
+]
+dynamic = ["readme"]
+
+[project.urls]
+"Homepage" = "https://github.com/sevdog/django-reverse-js"
+"Bug Tracker" = "https://github.com/sevdog/django-reverse-js/issues"
+
+
+[tool.setuptools]
+packages = ["django_reverse_js"]
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.md"], content-type = "text/markdown; charset=UTF-8; variant=GFM"}
+
+[project.optional-dependencies]
+tests = [
+    "coverage[toml]",
+    "pytest",
+    "pytest-django",
+    "pytest-cov",
+]
+
+[tool.coverage.run]
+omit = [
+    "*/migrations/*",
+    # do not check for templates
+    "*/templates/*",
+    # skip statics
+    "*/static/*",
+    "*/apps.py",
+]
+
+branch = true
+
+source = [
+    "django_reverse_js",
+]
+
+[tool.flake8]
+max-line-length = 100
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "tests.settings"
+django_find_project = false
+pythonpath = "."
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist =
+    py{310}-django32
+    py{310,311,312}-django{40,41,42,50,main}
+    qa
+
+[gh]
+python =
+    3.12 = py312
+    3.11 = py311
+    3.10 = py310
+
+[gh-actions:env]
+DJANGO =
+    3.2: dj32
+    4.0: dj40
+    4.1: dj41
+    4.2: dj42
+    5.0: dj50
+    main: djmain
+
+[testenv]
+package = editable
+extras = tests
+whitelist_externals = py.test
+commands = py.test
+deps=
+    django32: Django>=3.2,<3.3
+    django40: Django>=4.0,<4.1
+    django41: Django>=4.1,<4.2
+    django42: Django>=4.2,<4.3
+    django50: Django>=5.0a,<5.1
+    djmain: https://github.com/django/django/archive/main.tar.gz
+
+
+[testenv:qa]
+skip_install=true
+deps =
+    flake8
+    flake8-pyproject
+    black
+commands =
+    flake8 django_reverse_js tests
+    black -S --diff --check django_reverse_js tests
+"""

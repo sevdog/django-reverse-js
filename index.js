@@ -24,10 +24,7 @@ export class UrlResolver {
             // check every required param
             validateArgs = ([_urlTemplate, urlParams]) => urlParams.length === args.length;
             // build keyword-arguments from arguments
-            buildKwargs = (keys) => keys.reduce((kw, key, i) => {
-                kw[key] = args[i];
-                return kw;
-            }, {})
+            buildKwargs = (keys) => Object.fromEntries(keys.map((key, i) => [key, args[i]]));
         }
 
         // search between patterns if one matches provided args
@@ -38,7 +35,7 @@ export class UrlResolver {
         const [urlTemplate, urlKwargNames] = urlPattern;
         const urlKwargs = buildKwargs(urlKwargNames);
         const url = Object.entries(urlKwargs).reduce((partialUrl, [pName, pValue]) => {
-            if (pValue === null || pValue === undefined)
+            if (pValue == null)
                 pValue = '';
             // replace variable with param
             return partialUrl.replace(`%(${pName})s`, pValue);
