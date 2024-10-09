@@ -45,7 +45,7 @@ Add `'django_reverse_js'` to your `INSTALLED_APPS` setting.
 ```python
 INSTALLED_APPS = (
     ...
-    'django_js_reverse',
+    'django_reverse_js',
 )
 ```
 
