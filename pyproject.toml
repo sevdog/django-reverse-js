@@ -22,11 +22,13 @@ classifiers = [
 	"Programming Language :: Python :: 3.11",
 	"Programming Language :: Python :: 3.12",
 	"Programming Language :: Python :: 3.13",
+	"Programming Language :: Python :: 3.14",
 	"Framework :: Django",
 	"Framework :: Django :: 4.2",
 	"Framework :: Django :: 5.0",
 	"Framework :: Django :: 5.1",
 	"Framework :: Django :: 5.2",
+	"Framework :: Django :: 6.0",
     "Operating System :: OS Independent",
 	"Intended Audience :: Developers",
 ]
@@ -86,36 +88,41 @@ pythonpath = "."
 legacy_tox_ini = """
 [tox]
 envlist =
-    py{310,311,312}-django{42,50,51,52,main}
-    py313-django{51,52,main}
+    py{310,311}-django{42,50,51,52}
+    py312-django{42,50,51,52,60,main}
+    py313-django{51,52,60,main}
+    py314-django{52,60,main}
     qa
 
-[gh]
+[gh-actions]
 python =
-    3.13 = py313
-    3.12 = py312
-    3.11 = py311
-    3.10 = py310
+    3.10: py310
+    3.11: py311
+    3.12: py312
+    3.13: py313
+    3.14: py314
 
 [gh-actions:env]
 DJANGO =
-    4.2: dj42
-    5.0: dj50
-    5.1: dj51
-    5.1: dj52
-    main: djmain
+    4.2: django42
+    5.0: django50
+    5.1: django51
+    5.2: django52
+    6.0: django60
+    main: djangomain
 
 [testenv]
 package = editable
 extras = tests
-whitelist_externals = py.test
+allowlist_externals = py.test
 commands = py.test
 deps=
     django42: Django>=4.2,<4.3
     django50: Django>=5.0,<5.1
     django51: Django>=5.1,<5.2
-    django53: Django>=5.2,<5.3
-    djmain: https://github.com/django/django/archive/main.tar.gz
+    django52: Django>=5.2,<5.3
+    django60: Django>=6.0,<6.1
+    djangomain: https://github.com/django/django/archive/main.tar.gz
 
 
 [testenv:qa]
