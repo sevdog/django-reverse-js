@@ -76,8 +76,21 @@ source = [
     "django_reverse_js",
 ]
 
-[tool.flake8]
+[tool.ruff]
+# formatter line-length, matches the default previously used by black
+line-length = 88
+
+[tool.ruff.lint]
+# pycodestyle (E, W) + pyflakes (F), the rules flake8 enabled by default
+select = ["E", "W", "F"]
+
+[tool.ruff.lint.pycodestyle]
+# keep the more permissive limit previously set for flake8
 max-line-length = 100
+
+[tool.ruff.format]
+# equivalent of "black -S": do not normalize string quotes
+quote-style = "preserve"
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "tests.settings"
@@ -128,10 +141,8 @@ deps=
 [testenv:qa]
 skip_install=true
 deps =
-    flake8
-    flake8-pyproject
-    black
+    ruff
 commands =
-    flake8 django_reverse_js tests
-    black -S --diff --check django_reverse_js tests
+    ruff check django_reverse_js tests
+    ruff format --diff django_reverse_js tests
 """
