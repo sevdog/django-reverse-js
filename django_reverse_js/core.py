@@ -8,6 +8,7 @@ from django.urls import get_script_prefix, get_ns_resolver
 from django.urls.resolvers import URLResolver
 from .conf import settings
 
+
 def prepare_url_list(
     urlresolver: URLResolver,
     namespace_path: str = '',
@@ -52,11 +53,14 @@ def prepare_url_list(
     if include_namespace:
         for url_name in urlresolver.reverse_dict.keys():
             if isinstance(url_name, str):
-                yield namespace + url_name, [
-                    [f'{namespace_path}{pat[0]}', pat[1]]
-                    for pattern in urlresolver.reverse_dict.getlist(url_name)
-                    for pat in pattern[0]
-                ]
+                yield (
+                    namespace + url_name,
+                    [
+                        [f'{namespace_path}{pat[0]}', pat[1]]
+                        for pattern in urlresolver.reverse_dict.getlist(url_name)
+                        for pat in pattern[0]
+                    ],
+                )
 
     # check for inner namespaces
     for inner_ns, (
