@@ -7,19 +7,17 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "django-reverse-js"
-version = "0.1.8"
+version = "0.1.9"
 license = "MIT"
 authors = [{name="Davide Setti"}]
 dependencies = [
     "django>=4.2",
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 description = "Django URL handling in JavaScript"
 classifiers = [
 	"Programming Language :: Python",
 	"Programming Language :: Python :: 3",
-	"Programming Language :: Python :: 3.10",
-	"Programming Language :: Python :: 3.11",
 	"Programming Language :: Python :: 3.12",
 	"Programming Language :: Python :: 3.13",
 	"Programming Language :: Python :: 3.14",
@@ -29,6 +27,7 @@ classifiers = [
 	"Framework :: Django :: 5.1",
 	"Framework :: Django :: 5.2",
 	"Framework :: Django :: 6.0",
+	"Framework :: Django :: 6.1",
     "Operating System :: OS Independent",
 	"Intended Audience :: Developers",
 ]
@@ -52,12 +51,18 @@ packages = [
 [tool.setuptools.dynamic]
 readme = {file = ["README.md"], content-type = "text/markdown; charset=UTF-8; variant=GFM"}
 
-[project.optional-dependencies]
+[dependency-groups]
 tests = [
     "coverage[toml]",
     "pytest",
     "pytest-django",
     "pytest-cov",
+]
+linters = [
+    "pre-commit",
+    "ruff==0.16.5",
+    "mypy==2.3.1",
+    "django-stubs==6.1.0",
 ]
 
 [tool.coverage.run]
@@ -100,17 +105,15 @@ pythonpath = "."
 [tool.tox]
 legacy_tox_ini = """
 [tox]
+min_version = 4.22
 envlist =
-    py{310,311}-django{42,50,51,52}
-    py312-django{42,50,51,52,60,main}
-    py313-django{51,52,60,main}
-    py314-django{52,60,main}
+    py312-django{42,50,51,52,60,61,main}
+    py313-django{51,52,60,61,main}
+    py314-django{52,60,61,main}
     qa
 
 [gh-actions]
 python =
-    3.10: py310
-    3.11: py311
     3.12: py312
     3.13: py313
     3.14: py314
@@ -122,11 +125,12 @@ DJANGO =
     5.1: django51
     5.2: django52
     6.0: django60
+    6.1: django61
     main: djangomain
 
 [testenv]
 package = editable
-extras = tests
+dependency_groups = tests
 allowlist_externals = py.test
 commands = py.test
 deps=
@@ -135,14 +139,15 @@ deps=
     django51: Django>=5.1,<5.2
     django52: Django>=5.2,<5.3
     django60: Django>=6.0,<6.1
+    django61: Django>=6.1,<6.2
     djangomain: https://github.com/django/django/archive/main.tar.gz
 
 
 [testenv:qa]
 skip_install=true
-deps =
-    ruff
+dependency_groups = linters
 commands =
     ruff check django_reverse_js tests
     ruff format --diff django_reverse_js tests
+    mypy django_reverse_js
 """

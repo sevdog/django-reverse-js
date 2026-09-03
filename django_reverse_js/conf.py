@@ -1,15 +1,16 @@
 import re
+from pathlib import Path
 from django.conf import settings as _settings
 from django.core.exceptions import ImproperlyConfigured
 
 
 class _JSReverseSettings:
-    JS_IDENTIFIER_RE = re.compile(r'^[$A-Z_][\dA-Z_$]*$')
+    JS_IDENTIFIER_RE: re.Pattern[str] = re.compile(r'^[$A-Z_][\dA-Z_$]*$')
 
     @property
-    def JS_VAR_NAME(self):
+    def JS_VAR_NAME(self) -> str:
         """JS variable name to which assign url-resolver, default :code:`Urls`."""
-        var_name = getattr(_settings, 'REVERSEJS_VAR_NAME', 'Urls')
+        var_name: str = getattr(_settings, 'REVERSEJS_VAR_NAME', 'Urls')
         if not self.JS_IDENTIFIER_RE.match(var_name.upper()):
             raise ImproperlyConfigured(
                 f'REVERSEJS_VAR_NAME setting "{var_name}" is not a valid javascript identifier.'
@@ -17,9 +18,9 @@ class _JSReverseSettings:
         return var_name
 
     @property
-    def JS_GLOBAL_OBJECT_NAME(self):
+    def JS_GLOBAL_OBJECT_NAME(self) -> str:
         """JS global object to which bound url-resolver, default :code:`this`."""
-        global_name = getattr(_settings, 'REVERSEJS_GLOBAL_OBJECT_NAME', 'this')
+        global_name: str = getattr(_settings, 'REVERSEJS_GLOBAL_OBJECT_NAME', 'this')
         if not self.JS_IDENTIFIER_RE.match(global_name.upper()):
             raise ImproperlyConfigured(
                 f'REVERSEJS_GLOBAL_OBJECT_NAME setting "{global_name}" '
@@ -29,27 +30,27 @@ class _JSReverseSettings:
         return global_name
 
     @property
-    def JS_EXCLUDE_NAMESPACES(self):
+    def JS_EXCLUDE_NAMESPACES(self) -> list[str]:
         return getattr(_settings, 'REVERSEJS_EXCLUDE_NAMESPACES', [])
 
     @property
-    def JS_INCLUDE_ONLY_NAMESPACES(self):
+    def JS_INCLUDE_ONLY_NAMESPACES(self) -> list[str]:
         return getattr(_settings, 'REVERSEJS_INCLUDE_ONLY_NAMESPACES', [])
 
     @property
-    def JS_SCRIPT_PREFIX(self):
+    def JS_SCRIPT_PREFIX(self) -> str | None:
         return getattr(_settings, 'REVERSEJS_SCRIPT_PREFIX', None)
 
     @property
-    def JS_OUTPUT_PATH(self):
+    def JS_OUTPUT_PATH(self) -> str | Path | None:
         return getattr(_settings, 'REVERSEJS_OUTPUT_PATH', None)
 
     @property
-    def JS_TEMPLATE(self):
+    def JS_TEMPLATE(self) -> str:
         minify = bool(getattr(_settings, 'REVERSEJS_MINIFY', False))
         if minify:
             return 'django_reverse_js/url-resolver.min.js'
         return 'django_reverse_js/url-resolver.js'
 
 
-settings = _JSReverseSettings()
+settings: _JSReverseSettings = _JSReverseSettings()

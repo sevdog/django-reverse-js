@@ -1,4 +1,6 @@
+from argparse import ArgumentParser
 from pathlib import Path
+from typing import Any
 from django.conf import settings as dj_settings
 from django.core.exceptions import ImproperlyConfigured
 from django.core.files.base import ContentFile
@@ -11,9 +13,9 @@ from ...conf import settings
 
 class Command(BaseCommand):
     help = 'Creates a static urls-js file for django-reverse-js'
-    requires_system_checks = []
+    requires_system_checks: list[str] = []
 
-    def add_arguments(self, parser):
+    def add_arguments(self, parser: ArgumentParser) -> None:
         parser.add_argument(
             'out_file',
             type=Path,
@@ -22,7 +24,7 @@ class Command(BaseCommand):
             default=Path('reverse.js'),
         )
 
-    def get_location(self):
+    def get_location(self) -> Path:
         output_path = settings.JS_OUTPUT_PATH
         if output_path:
             return Path(output_path)
@@ -35,9 +37,9 @@ class Command(BaseCommand):
 
         return Path(dj_settings.STATIC_ROOT) / 'django_reverse_js' / 'js'
 
-    def handle(self, *args, **options):
+    def handle(self, *args: Any, **options: Any) -> None:
         out_filename = str(options.get('out_file'))
-        verbosity = options.get('verbosity')
+        verbosity = options.get('verbosity', 0)
         location = self.get_location()
         fs = FileSystemStorage(location=location)
         # remove file if it was already present
