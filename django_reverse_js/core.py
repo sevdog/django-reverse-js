@@ -1,12 +1,18 @@
 import json
+from collections.abc import Iterator
+from typing import Any
 from django.core.exceptions import ImproperlyConfigured
 from django.template import loader
-from django.utils.safestring import mark_safe
+from django.utils.safestring import SafeString, mark_safe
 from django.urls import get_script_prefix, get_ns_resolver
+from django.urls.resolvers import URLResolver
 from .conf import settings
 
-
-def prepare_url_list(urlresolver, namespace_path='', namespace=''):
+def prepare_url_list(
+    urlresolver: URLResolver,
+    namespace_path: str = '',
+    namespace: str = '',
+) -> Iterator[tuple[str, list[list[Any]]]]:
     """
     Builds namespace urls and patterns recurively in the following form::
        [(<url_name>, <url_patern_tuple> ), ...]
@@ -46,12 +52,11 @@ def prepare_url_list(urlresolver, namespace_path='', namespace=''):
     if include_namespace:
         for url_name in urlresolver.reverse_dict.keys():
             if isinstance(url_name, str):
-                url_patterns = [
+                yield namespace + url_name, [
                     [f'{namespace_path}{pat[0]}', pat[1]]
                     for pattern in urlresolver.reverse_dict.getlist(url_name)
                     for pat in pattern[0]
                 ]
-                yield namespace + url_name, url_patterns
 
     # check for inner namespaces
     for inner_ns, (
@@ -77,7 +82,10 @@ def prepare_url_list(urlresolver, namespace_path='', namespace=''):
         yield from prepare_url_list(inner_urlresolver, inner_ns_path, inner_ns)
 
 
-def generate_json(default_urlresolver, script_prefix=None):
+def generate_json(
+    default_urlresolver: URLResolver,
+    script_prefix: str | None = None,
+) -> dict[str, Any]:
     if script_prefix is None:
         script_prefix = get_script_prefix()
 
@@ -94,20 +102,20 @@ def generate_json(default_urlresolver, script_prefix=None):
     }
 
 
-_json_script_escapes = {
+_json_script_escapes: dict[int, str] = {
     ord(">"): "\\u003E",
     ord("<"): "\\u003C",
     ord("&"): "\\u0026",
 }
 
 
-def _safe_json(obj):
+def _safe_json(obj: Any) -> SafeString:
     # replace potentially harmful values from JSON
     # before marking string as safe
     return mark_safe(json.dumps(obj).translate(_json_script_escapes))
 
 
-def generate_js(default_urlresolver):
+def generate_js(default_urlresolver: URLResolver) -> str:
     script_prefix = settings.JS_SCRIPT_PREFIX or get_script_prefix()
     if not script_prefix.endswith('/'):
         script_prefix = f'{script_prefix}/'
@@ -124,7 +132,7 @@ def generate_js(default_urlresolver):
     return js_content
 
 
-def generate_cjs_module():
+def generate_cjs_module() -> str:
     return loader.render_to_string(
         'django_reverse_js/url-resolver.tpl.js',
         {

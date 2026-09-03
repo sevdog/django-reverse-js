@@ -59,10 +59,10 @@ tests = [
     "pytest-cov",
 ]
 linters = [
-    "django-upgrade",
     "pre-commit",
-    "pyupgrade",
-    "ruff",
+    "ruff==0.16.5",
+    "mypy==2.3.1",
+    "django-stubs==6.1.0",
 ]
 
 [tool.coverage.run]
@@ -149,4 +149,5 @@ dependency_groups = linters
 commands =
     ruff check django_reverse_js tests
     ruff format --diff django_reverse_js tests
+    mypy django_reverse_js
 """

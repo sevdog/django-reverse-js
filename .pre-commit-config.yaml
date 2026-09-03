@@ -1,23 +1,32 @@
 repos:
-  - repo: local
-    hooks:
-      - id: pyupgrade
-        name: pyupgrade
-        entry: pyupgrade --py312-plus
-        language: system
-        types: [python]
-      - id: django-upgrade
-        name: django-upgrade
-        entry: django-upgrade --target-version 4.2
-        language: system
-        types: [python]
-      - id: ruff-check
-        name: ruff check
-        entry: ruff check --fix
-        language: system
-        types: [python]
-      - id: ruff-format
-        name: ruff format
-        entry: ruff format
-        language: system
-        types: [python]
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v6.0.0
+  hooks:
+    - id: end-of-file-fixer
+    - id: trailing-whitespace
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  # Ruff version.
+  rev: v0.16.5
+  hooks:
+    # isort
+    - id: ruff-check
+      files: backend
+      args: [--select, I, --fix]
+    # format
+    - id: ruff-format
+      files: backend
+    # lint
+    - id: ruff-check
+      files: backend
+- repo: https://github.com/asottile/pyupgrade
+  rev: v3.21.2
+  hooks:
+    - id: pyupgrade
+      files: backend
+      args: ["--py313-plus"]
+- repo: https://github.com/adamchainz/django-upgrade
+  rev: 1.31.1
+  hooks:
+    - id: django-upgrade
+      files: backend
+      args: ["--target-version", "4.2"]
